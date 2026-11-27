@@ -1,0 +1,22 @@
+name: Deploy with Docker
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t my-deploy-image .
+
+      - name: Run deployment container
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: docker run --rm -e API_TOKEN my-deploy-image
