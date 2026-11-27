@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
 
-: "${API_TOKEN:?API_TOKEN is not set}"
+if [ -z "${API_TOKEN:-}" ]; then
+  echo "API_TOKEN is missing. Add it in the repository's Actions secrets."
+  exit 1
+fi
 
-# Example: use the token in a request. Do not echo or print it.
-curl --fail --silent --show-error \
-  -H "Authorization: Bearer $API_TOKEN" \
-  https://api.example.com/deploy
+echo "API_TOKEN is available."
